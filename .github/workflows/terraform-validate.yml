@@ -12,24 +12,37 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+
     steps:
+      # --- 1) Pull down the repo -------------------------------
       - uses: actions/checkout@v4
+
+      # --- 2) Install Terraform -------------------------------
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.5.7
+
+      # --- 3) Basic 'terraform validate' ----------------------
       - name: Init & validate modules
         run: |
           cd examples/single-account
           terraform init -backend=false
           terraform validate
-      - name: OPA policy check
+
+      # --- 4) Install OPA and run unit tests ------------------
+      - name: OPA unit tests
         run: |
-          # install OPA
           curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
           chmod +x opa
-          # evaluate the S3-encryption policy; fail if any deny message appears
-          ./opa eval --fail-defined -d policies 'data.secure_baseline.deny'
-             - name: OPA unit tests
-     run: |
-       ./opa test policies
+          ./opa test policies   # runs policies/s3_encrypted_test.rego
 
+      # --- 5) (Optional) Full-repo policy scan ---------------
+      # 👉 This step evaluates every resource against your policies.
+      # 👉 It’s commented out for now because we’d need plan JSON input.
+      # - name: OPA policy check
+      #   run: |
+      #     ./opa eval --fail-defined \
+      #       -d policies \
+      #       'data.secure_baseline.deny'
+      # 👉 Once you have a tfplan-to-JSON step (or other real input),
+      #    un-comment the block above to fail the build on policy violations.
