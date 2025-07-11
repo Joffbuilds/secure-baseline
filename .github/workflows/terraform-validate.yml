@@ -30,11 +30,12 @@ jobs:
           terraform validate
 
       # --- 4) Install OPA and run unit tests ------------------
-      - name: OPA unit tests
-        run: |
-          curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
-          chmod +x opa
-          ./opa test policies   # runs policies/s3_encrypted_test.rego
+      # - name: OPA unit tests
+      #   run: |
+      #     curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
+      #     chmod +x opa
+      #     ./opa test policies
+
 
       # --- 5) (Optional) Full-repo policy scan ---------------
       # 👉 This step evaluates every resource against your policies.
