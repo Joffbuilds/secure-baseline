@@ -22,3 +22,10 @@ jobs:
           cd examples/single-account
           terraform init -backend=false
           terraform validate
+      - name: OPA policy check
+        run: |
+          # install OPA
+          curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
+          chmod +x opa
+          # evaluate the S3-encryption policy; fail if any deny message appears
+          ./opa eval --fail-defined -d policies 'data.secure_baseline.deny'
