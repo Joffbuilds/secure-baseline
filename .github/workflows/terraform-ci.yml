@@ -4,12 +4,10 @@ on:
   push:
     paths:
       - '**.tf'
-      - '**.tfvars'
       - '.github/workflows/terraform-ci.yml'
   pull_request:
     paths:
       - '**.tf'
-      - '**.tfvars'
 
 jobs:
   terraform:
@@ -27,17 +25,12 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        working-directory: examples/single-account
 
       - name: Terraform Validate
         run: terraform validate
+        working-directory: examples/single-account
 
       - name: Terraform Plan
         run: terraform plan
-
-      # - name: Run Sentinel policy checks (optional)
-      #   run: |
-      #     echo "Sentinel would run here if policies were configured"
-
-      # - name: Run OPA policy tests (optional)
-      #   run: |
-      #     echo "OPA tests would run here if added"
+        working-directory: examples/single-account
