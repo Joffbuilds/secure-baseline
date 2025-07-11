@@ -1,4 +1,6 @@
 # Secure Baseline
+![Terraform Validate](https://github.com/joffbuilds/secure-baseline/actions/workflows/terraform-validate.yml/badge.svg)
+
 Terraform starter kit for a secure AWS baseline
 
 ## What’s inside
