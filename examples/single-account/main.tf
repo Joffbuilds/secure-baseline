@@ -12,3 +12,7 @@ module "iam_readonly" {
   source = "../../modules/iam_least_privilege"
   role_name = "secure-baseline-demo-readonly"
 }
+module "cloudtrail" {
+  source          = "../../modules/cloudtrail"
+  log_bucket_name = "example-cloudtrail-bucket"
+}
