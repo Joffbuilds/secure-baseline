@@ -1,21 +1,15 @@
-terraform {
-  required_version = ">= 1.5"
+provider "aws" {
+  region = "us-east-1"
 }
 
-resource "aws_cloudtrail" "secure" {
-  name                       = "secure-baseline-trail"
-  s3_bucket_name = var.log_bucket_name
-  include_global_service_events = true
-  is_multi_region_trail         = true
-  enable_log_file_validation    = true
-  kms_key_id                    = null          # uses S3 SSE-AES256
+module "cloudtrail" {
+  source          = "terraform-aws-modules/cloudtrail/aws"
+  name            = "example-cloudtrail"
+  log_bucket_name = "my-temp-bucket-for-ci"  # Replace with your actual S3 bucket if needed
+  enable_logging  = true
+}
 
-  event_selector {
-    read_write_type           = "All"
-    include_management_events = true
-  }
-
-  tags = {
-    Purpose = "secure-baseline-cloudtrail"
-  }
+output "cloudtrail_name" {
+  description = "Name of the CloudTrail trail"
+  value       = module.cloudtrail.cloudtrail_name
 }
