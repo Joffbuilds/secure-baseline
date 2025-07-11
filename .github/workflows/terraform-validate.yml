@@ -1,0 +1,24 @@
+name: Terraform Validate
+
+on:
+  push:
+    paths:
+      - '**.tf'
+      - '.github/workflows/terraform-validate.yml'
+  pull_request:
+    paths:
+      - '**.tf'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+      - name: Init & validate modules
+        run: |
+          cd examples/single-account
+          terraform init -backend=false
+          terraform validate
