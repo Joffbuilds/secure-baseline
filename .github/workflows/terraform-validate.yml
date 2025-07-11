@@ -29,3 +29,7 @@ jobs:
           chmod +x opa
           # evaluate the S3-encryption policy; fail if any deny message appears
           ./opa eval --fail-defined -d policies 'data.secure_baseline.deny'
+             - name: OPA unit tests
+     run: |
+       ./opa test policies
+
