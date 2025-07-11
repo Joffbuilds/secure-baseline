@@ -14,5 +14,6 @@ module "iam_readonly" {
 }
 module "cloudtrail" {
   source          = "../../modules/cloudtrail"
-  log_bucket_name = "example-cloudtrail-bucket"
+log_bucket_name = "my-temp-bucket-for-testing"
+
 }
