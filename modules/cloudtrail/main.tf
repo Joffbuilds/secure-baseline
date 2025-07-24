@@ -1,8 +1,3 @@
-variable "log_bucket_name" {
-  description = "Existing S3 bucket where CloudTrail should write logs"
-  type        = string
-}
-
 resource "aws_cloudtrail" "this" {
   name                          = "secure-baseline-cloudtrail"
   s3_bucket_name                = var.log_bucket_name
