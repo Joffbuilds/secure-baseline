@@ -1,15 +1,17 @@
-provider "aws" {
-  region = "us-east-1"
+variable "log_bucket_name" {
+  description = "Existing S3 bucket where CloudTrail should write logs"
+  type        = string
 }
 
-module "cloudtrail" {
-  source          = "terraform-aws-modules/cloudtrail/aws"
-  name            = "example-cloudtrail"
-  log_bucket_name = "my-temp-bucket-for-ci"  # Replace with your actual S3 bucket if needed
-  enable_logging  = true
+resource "aws_cloudtrail" "this" {
+  name                          = "secure-baseline-cloudtrail"
+  s3_bucket_name                = var.log_bucket_name
+  is_multi_region_trail         = true
+  include_global_service_events = true
+  enable_logging                = true
 }
 
 output "cloudtrail_name" {
   description = "Name of the CloudTrail trail"
-  value       = module.cloudtrail.cloudtrail_name
+  value       = aws_cloudtrail.this.name
 }
